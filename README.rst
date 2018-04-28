@@ -1,3 +1,7 @@
+.. image:: https://travis-ci.org/PHPirates/perf.svg?branch=master
+    :target: https://travis-ci.org/PHPirates/perf
+    :alt: Travis
+
 ====
 perf
 ====
