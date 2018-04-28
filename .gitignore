@@ -1,0 +1,13 @@
+## A gitignore for LaTeX projects
+
+*.iml
+.idea/
+out/**
+auxil/**
+src/*.ilg
+src/*.ind
+
+# Generated files by SageTeX
+!auxil/*.sagetex.scmd
+!auxil/*.sagetex.sout
+!src/sagetex.sty
