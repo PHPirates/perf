@@ -14,6 +14,8 @@ Download
     :target: https://github.com/PHPirates/perf/releases/latest
     :alt: Release
 
+This repo includes an `example file <src/usage-example.tex>`_.
+
 Performance profiles?
 ---------------------
 

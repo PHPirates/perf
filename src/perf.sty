@@ -1,0 +1,85 @@
+%%
+%% perf package
+%% Author: made into a package by Thomas Schouten
+%% Original at https://tex.stackexchange.com/a/197349/98850
+%% Started at 28-04-2018
+%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{perf}[Performance Profiles]
+
+\RequirePackage{pgfplotstable}
+
+\pgfplotsset{compat=1.10,
+perf name table/.default=mytable}
+
+\makeatletter
+\pgfmathdeclarefunction{colleqx}{2}{%
+    \begingroup%
+    \c@pgf@countd=0% No rows satisfy yet
+    \pgfmathfloattoint{#1}%
+    \pgfplotstableforeachcolumnelement{perf-\pgfmathresult}\of\mytable\as\mycompval{%
+    \pgfmathfloatparsenumber{\mycompval}%
+    \pgfmathfloatlessthan{\pgfmathresult}{#2}%
+    \ifpgfmathfloatcomparison\advance\c@pgf@countd by1\fi%
+    }%
+    \pgfplotstablegetrowsof{\mytable}%
+    \pgfmathparse{\c@pgf@countd/\pgfplotsretval}%
+    \pgfmath@smuggleone\pgfmathresult%
+    \endgroup%
+}
+
+%
+% Set the data to be used.
+%
+\newcommand{\perfset}[1]{
+
+    \pgfplotstableread[row sep=crcr]{#1}\mytable
+
+    \pgfplotstablegetcolsof{\mytable}% How many columns
+    \edef\mylastj{\number\numexpr\pgfplotsretval-1}% From zero to this num
+
+    %=========== Get the min of rows into a separate column =====================
+    \pgfplotstablecreatecol[
+    create col/assign/.code={%
+    \def\myrowmin{1e10}% Some big number that will be ignored in any min() invocation
+    \pgfplotsforeachungrouped \x in {0,...,\mylastj}{%
+    \pgfkeys{/pgf/fpu,/pgf/fpu/output format=sci}% To handle big numbers
+    \pgfmathparse{min(\myrowmin,\thisrowno{\x})}%
+    \pgfkeys{/pgf/fpu=false}%
+    \let\myrowmin=\pgfmathresult%
+    }%
+    \pgfkeyslet{/pgfplots/table/create col/next content}\myrowmin%
+    }
+    ]{minperf}\mytable
+
+    %=========== Get each performance into a separate column =====================
+    \pgfplotsinvokeforeach{0,...,\mylastj}{
+    \pgfplotstablecreatecol[
+    create col/assign/.code={%
+    \pgfmathparse{\thisrowno{##1}/\thisrow{minperf}}%
+    \pgfkeyslet{/pgfplots/table/create col/next content}\pgfmathresult%
+    }
+    ]{perf-##1}\mytable
+    }
+
+    \pgfplotstabletypeset[]{\mytable} % Let's see if minperf and perffun-i works?
+
+}
+
+%
+% Add just performances to a tikz plot.
+%
+\newcommand{\addperformances}{
+    \addplot+[const plot] table[,x expr=\coordindex, y=perf-0] {\mytable};
+    \addplot+[const plot] table[,x expr=\coordindex, y=perf-1] {\mytable};
+}
+
+
+%
+% Add the performance profiles to a tikz plot.
+%
+\newcommand{\addprofiles}{
+    \addplot+[const plot,domain=1:12] (x,{colleqx(0,x)});
+    \addplot+[const plot,domain=1:12] (x,{colleqx(1,x)});
+}
