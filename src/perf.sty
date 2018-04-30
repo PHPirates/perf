@@ -31,6 +31,7 @@ perf name table/.default=mytable}
 
 %
 % Set the data to be used.
+% Note: it seems to be that the maximum number in the table which doesn't throw any error is 16383.
 %
 \newcommand{\perfset}[1]{
 
@@ -41,26 +42,26 @@ perf name table/.default=mytable}
 
     %=========== Get the min of rows into a separate column =====================
     \pgfplotstablecreatecol[
-    create col/assign/.code={%
-    \def\myrowmin{1e5}% Some big number that will be ignored in any min() invocation
-    \pgfplotsforeachungrouped \x in {0,...,\mylastj}{%
-    \pgfkeys{/pgf/fpu,/pgf/fpu/output format=sci}% To handle big numbers
-    \pgfmathparse{min(\myrowmin,\thisrowno{\x})}%
-    \pgfkeys{/pgf/fpu=false}%
-    \let\myrowmin=\pgfmathresult%
-    }%
-    \pgfkeyslet{/pgfplots/table/create col/next content}\myrowmin%
-    }
+        create col/assign/.code={%
+            \def\myrowmin{1e5}% Some big number that will be ignored in any min() invocation
+            \pgfplotsforeachungrouped \x in {0,...,\mylastj}{%
+            \pgfkeys{/pgf/fpu,/pgf/fpu/output format=sci}% To handle big numbers
+            \pgfmathparse{min(\myrowmin,\thisrowno{\x})}%
+            \pgfkeys{/pgf/fpu=false}%
+            \let\myrowmin=\pgfmathresult%
+            }%
+            \pgfkeyslet{/pgfplots/table/create col/next content}\myrowmin%
+        }
     ]{minperf}\perftable
 
     %=========== Get each performance into a separate column =====================
     \pgfplotsinvokeforeach{0,...,\mylastj}{
-    \pgfplotstablecreatecol[
-    create col/assign/.code={%
-    \pgfmathparse{\thisrowno{##1}/\thisrow{minperf}}%
-    \pgfkeyslet{/pgfplots/table/create col/next content}\pgfmathresult%
-    }
-    ]{perf-##1}\perftable
+        \pgfplotstablecreatecol[
+            create col/assign/.code={%
+                \pgfmathparse{\thisrowno{##1}/\thisrow{minperf}}%
+                \pgfkeyslet{/pgfplots/table/create col/next content}\pgfmathresult%
+            }
+        ]{perf-##1}\perftable
     }
 
 }
@@ -100,6 +101,18 @@ perf name table/.default=mytable}
 %\end{tikzpicture}
 %
 \newcommand{\addprofiles}{
-    \addplot+[const plot,domain=1:12] (x,{colleqx(0,x)});
-    \addplot+[const plot,domain=1:12] (x,{colleqx(1,x)});
+    \addplot+[const plot,domain=1:10] (x,{colleqx(0,x)});
+    \addplot+[const plot,domain=1:10] (x,{colleqx(1,x)});
+}
+
+
+\def\countdown#1{%
+\ifnum#1>-1 \addplot+[const plot,domain=1:10] (x,{colleqx(#1,x)});
+\expandafter\countdown\expandafter{\number\numexpr#1-1\expandafter}%
+\fi
+}
+
+% Param #1: Number of methods to show.
+\newcommand{\addNprofiles}[1]{
+    \countdown{\number\numexpr#1-1}
 }

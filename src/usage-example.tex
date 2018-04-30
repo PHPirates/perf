@@ -44,21 +44,22 @@
     %
 
     \perfset{
-    better worse \\
-    1    30 \\
-    1     2 \\
-    1     3 \\
-    1    50 \\
-    1     3 \\
-    1     2 \\
-    30     1 \\
+    better worse worst \\
+    1    30  99\\
+    1     2  10\\
+    1     3  10\\
+    1    50  999\\
+    1     3  9 \\
+    1     1  16383 \\
+    16383 1 9999\\
+    16383 2 9999 \\
     }
 
     \begin{tikzpicture}
         \begin{axis}[title=Performance Functions,height=6cm,
         legend pos=outer north east,grid=both,no marks]
-            \addprofiles
-            \legend{better,worse}
+            \addNprofiles{3}
+            \legend{better,worse,worst}
         \end{axis}
     \end{tikzpicture}
 
