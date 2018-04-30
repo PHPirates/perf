@@ -25,4 +25,10 @@ Performance profiles?
 
 A good explanation of performance profiles is given by `Dolan, E. D., & Moré, J. J. (2002). Benchmarking optimization software with performance profiles. Mathematical programming, 91(2), 201-213.  <https://arxiv.org/pdf/cs/0102001.pdf>`_
 
+|
+|
+|
+|
+We try to adhere to `Semantic Versioning <http://semver.org/>`_, an update of the first version digit means that you may need to update your LaTeX because some backwards incompatible changes were made.
+
 

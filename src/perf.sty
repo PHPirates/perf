@@ -1,5 +1,6 @@
 %%
 %% perf package
+%% version 1.0.0
 %% Author: @percusse, made into a package by Thomas Schouten
 %% Original at https://tex.stackexchange.com/a/197349/98850
 %% Started at 28-04-2018
@@ -90,33 +91,32 @@ perf name table/.default=mytable}
 }
 
 
-%
-% Add the performance profiles to a tikz plot. Example:
-%\begin{tikzpicture}
-%    \begin{axis}[title=Performance Functions,height=6cm,
-%    legend pos=outer north east,grid=both,no marks]
-%        \addprofiles
-%        \legend{robust,fast}
-%    \end{axis}
-%\end{tikzpicture}
-%
-\newcommand{\addprofiles}{
-    \addplot+[const plot,domain=1:10] (x,{colleqx(0,x)});
-    \addplot+[const plot,domain=1:10] (x,{colleqx(1,x)});
-}
-
 % Default factor interval for plotting
 \newcommand{\maxplotfactor}{10}
 
+% Helper function for generating plot lines.
 \def\countdown#1{%
 \ifnum#1>-1 \addplot+[const plot,domain=1:\maxplotfactor] (x,{colleqx(#1,x)});
 \expandafter\countdown\expandafter{\number\numexpr#1-1\expandafter}%
 \fi
 }
 
+%
+% Add the performance profiles to a tikz plot.
 % Param #1: Number of methods to show.
 % Param #2: Plot range of the factor (upper limit).
-\newcommand{\addNprofiles}[2]{{
+%
+%Example:
+%\begin{tikzpicture}
+%    \begin{axis}[title=Performance Functions,height=6cm,
+%    legend pos=outer north east,grid=both,no marks]
+%        \addNprofiles{3}{15}
+%        \legend{robust,fast}
+%    \end{axis}
+%\end{tikzpicture}
+%
+
+\newcommand{\addprofiles}[2]{{
     \renewcommand{\maxplotfactor}{#2}
     \countdown{\number\numexpr#1-1}
 }}
