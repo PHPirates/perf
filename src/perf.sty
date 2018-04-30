@@ -105,14 +105,18 @@ perf name table/.default=mytable}
     \addplot+[const plot,domain=1:10] (x,{colleqx(1,x)});
 }
 
+% Default factor interval for plotting
+\newcommand{\maxplotfactor}{10}
 
 \def\countdown#1{%
-\ifnum#1>-1 \addplot+[const plot,domain=1:10] (x,{colleqx(#1,x)});
+\ifnum#1>-1 \addplot+[const plot,domain=1:\maxplotfactor] (x,{colleqx(#1,x)});
 \expandafter\countdown\expandafter{\number\numexpr#1-1\expandafter}%
 \fi
 }
 
 % Param #1: Number of methods to show.
-\newcommand{\addNprofiles}[1]{
+% Param #2: Plot range of the factor (upper limit).
+\newcommand{\addNprofiles}[2]{{
+    \renewcommand{\maxplotfactor}{#2}
     \countdown{\number\numexpr#1-1}
-}
+}}
