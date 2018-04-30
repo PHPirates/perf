@@ -1,6 +1,6 @@
 %%
 %% perf package
-%% Author: made into a package by Thomas Schouten
+%% Author: @percusse, made into a package by Thomas Schouten
 %% Original at https://tex.stackexchange.com/a/197349/98850
 %% Started at 28-04-2018
 %%
@@ -18,12 +18,12 @@ perf name table/.default=mytable}
     \begingroup%
     \c@pgf@countd=0% No rows satisfy yet
     \pgfmathfloattoint{#1}%
-    \pgfplotstableforeachcolumnelement{perf-\pgfmathresult}\of\mytable\as\mycompval{%
+    \pgfplotstableforeachcolumnelement{perf-\pgfmathresult}\of\perftable\as\mycompval{%
     \pgfmathfloatparsenumber{\mycompval}%
     \pgfmathfloatlessthan{\pgfmathresult}{#2}%
     \ifpgfmathfloatcomparison\advance\c@pgf@countd by1\fi%
     }%
-    \pgfplotstablegetrowsof{\mytable}%
+    \pgfplotstablegetrowsof{\perftable}%
     \pgfmathparse{\c@pgf@countd/\pgfplotsretval}%
     \pgfmath@smuggleone\pgfmathresult%
     \endgroup%
@@ -34,15 +34,15 @@ perf name table/.default=mytable}
 %
 \newcommand{\perfset}[1]{
 
-    \pgfplotstableread[row sep=crcr]{#1}\mytable
+    \pgfplotstableread[row sep=crcr]{#1}\perftable
 
-    \pgfplotstablegetcolsof{\mytable}% How many columns
+    \pgfplotstablegetcolsof{\perftable}% How many columns
     \edef\mylastj{\number\numexpr\pgfplotsretval-1}% From zero to this num
 
     %=========== Get the min of rows into a separate column =====================
     \pgfplotstablecreatecol[
     create col/assign/.code={%
-    \def\myrowmin{1e10}% Some big number that will be ignored in any min() invocation
+    \def\myrowmin{1e5}% Some big number that will be ignored in any min() invocation
     \pgfplotsforeachungrouped \x in {0,...,\mylastj}{%
     \pgfkeys{/pgf/fpu,/pgf/fpu/output format=sci}% To handle big numbers
     \pgfmathparse{min(\myrowmin,\thisrowno{\x})}%
@@ -51,7 +51,7 @@ perf name table/.default=mytable}
     }%
     \pgfkeyslet{/pgfplots/table/create col/next content}\myrowmin%
     }
-    ]{minperf}\mytable
+    ]{minperf}\perftable
 
     %=========== Get each performance into a separate column =====================
     \pgfplotsinvokeforeach{0,...,\mylastj}{
@@ -60,24 +60,44 @@ perf name table/.default=mytable}
     \pgfmathparse{\thisrowno{##1}/\thisrow{minperf}}%
     \pgfkeyslet{/pgfplots/table/create col/next content}\pgfmathresult%
     }
-    ]{perf-##1}\mytable
+    ]{perf-##1}\perftable
     }
 
-    \pgfplotstabletypeset[]{\mytable} % Let's see if minperf and perffun-i works?
-
 }
 
+
 %
-% Add just performances to a tikz plot.
+% Show a results table with performances, best performance (minperf) and factors (perf-i).
+%
+\newcommand{\printperftable}{
+    \pgfplotstabletypeset[]{\perftable}
+}
+
+
+%
+% Add just performances to a tikz plot. Example:
+%\begin{tikzpicture}
+%    \begin{axis}[title=Performances,height=6cm]
+%        \addperformances
+%        \legend{robust, fast}
+%    \end{axis}
+%\end{tikzpicture}
 %
 \newcommand{\addperformances}{
-    \addplot+[const plot] table[,x expr=\coordindex, y=perf-0] {\mytable};
-    \addplot+[const plot] table[,x expr=\coordindex, y=perf-1] {\mytable};
+    \addplot+[const plot] table[,x expr=\coordindex, y=perf-0] {\perftable};
+    \addplot+[const plot] table[,x expr=\coordindex, y=perf-1] {\perftable};
 }
 
 
 %
-% Add the performance profiles to a tikz plot.
+% Add the performance profiles to a tikz plot. Example:
+%\begin{tikzpicture}
+%    \begin{axis}[title=Performance Functions,height=6cm,
+%    legend pos=outer north east,grid=both,no marks]
+%        \addprofiles
+%        \legend{robust,fast}
+%    \end{axis}
+%\end{tikzpicture}
 %
 \newcommand{\addprofiles}{
     \addplot+[const plot,domain=1:12] (x,{colleqx(0,x)});
