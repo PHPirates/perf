@@ -14,7 +14,7 @@ From an original `post by @percusse <https://tex.stackexchange.com/a/197349/9885
 Download
 --------
 
-.. image:: https://img.shields.io/github/release/PHPirates/perf.svg?maxAge=2592000
+.. image:: https://img.shields.io/github/release/PHPirates/perf.svg?maxAge=259200
     :target: https://github.com/PHPirates/perf/releases/latest
     :alt: Release
 
