@@ -49,24 +49,44 @@
     %
 
     \perfset{
-    better worse worst \\
-    1    30  99\\
-    1     2  10\\
-    1     3  10\\
-    1    50  999\\
-    1     3  9 \\
-    1     1  16383 \\
-    16383 1 9999\\
-    16383 2 9999 \\
+    better worse worst average \\
+    1    30  99  20 \\
+    1     2  10 20 \\
+    1     3  10 20 \\
+    1    50  999 20 \\
+    1     3  9  20 \\
+    1     1  16383  20 \\
+    16383 1 9999 20 \\
+    16383 2 9999  20 \\
+    }
+
+    % The cycle of line colours and styles can be customised.
+    \pgfplotscreateplotcyclelist{style cycle}{
+    solid, green \\
+    dotted, red \\
+    dashed, blue \\
+    dashdotted, black \\
+    dasdotdotted, yellow \\
+    densely dotted \\
+    loosely dashed \\
+    loosely dotted \\
+    densely dashed \\
+    densely dashdotted \\
     }
 
     \begin{figure}
         \centering
         \begin{tikzpicture}
-            \begin{axis}[title=Performance Functions,height=6cm,
-            legend pos=outer north east,grid=both,no marks]
-                \addprofiles{3}{15}
-                \legend{better,worse,worst}
+            \begin{axis}[
+            title=Performance Functions,
+            height=6cm,
+            legend pos=outer north east,
+            grid=both,
+            no marks,
+            cycle list name=style cycle
+            ]
+                \addprofiles{4}{15}
+                \legend{better,worse,worst,average}
             \end{axis}
         \end{tikzpicture}
         \label{fig:example-3-methods}

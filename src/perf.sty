@@ -96,7 +96,7 @@ perf name table/.default=mytable}
 
 % Helper function for generating plot lines.
 \def\countdown#1{%
-\ifnum#1>-1 \addplot+[const plot,domain=1:\maxplotfactor] (x,{colleqx(#1,x)});
+\ifnum#1>-1 \addplot+[const plot, domain=1:\maxplotfactor] (x,{colleqx(#1,x)});
 \expandafter\countdown\expandafter{\number\numexpr#1-1\expandafter}%
 \fi
 }
