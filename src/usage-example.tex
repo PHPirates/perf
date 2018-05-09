@@ -30,13 +30,18 @@
         \end{axis}
     \end{tikzpicture}
 
-    \begin{tikzpicture}
-        \begin{axis}[title=Performance Functions,height=6cm,
-        legend pos=outer north east,grid=both,no marks]
-            \addprofiles{2}{10}
-            \legend{robust,fast}
-        \end{axis}
-    \end{tikzpicture}
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[title=Performance Functions,height=6cm,
+            legend pos=outer north east,grid=both,no marks]
+                \addprofiles{2}{15}
+                \legend{better,worse,worst}
+            \end{axis}
+        \end{tikzpicture}
+        \label{fig:example-2-methods}
+        \caption{Example with two methods}
+    \end{figure}
 
 
     %
@@ -55,13 +60,20 @@
     16383 2 9999 \\
     }
 
-    \begin{tikzpicture}
-        \begin{axis}[title=Performance Functions,height=6cm,
-        legend pos=outer north east,grid=both,no marks]
-            \addprofiles{3}{15}
-            \legend{better,worse,worst}
-        \end{axis}
-    \end{tikzpicture}
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[title=Performance Functions,height=6cm,
+            legend pos=outer north east,grid=both,no marks]
+                \addprofiles{3}{15}
+                \legend{better,worse,worst}
+            \end{axis}
+        \end{tikzpicture}
+        \label{fig:example-3-methods}
+        \caption{Example with three methods}
+    \end{figure}
+
+
 
 
 \end{document}
