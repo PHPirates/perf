@@ -12,7 +12,8 @@ Usage
 An example file is in `src/usage-example.tex`.
 An even more minimal example is
 
-.. code::
+.. code-block:: tex
+
     \documentclass[11pt]{article}
     \usepackage{perf}
 
