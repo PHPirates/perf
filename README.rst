@@ -14,7 +14,7 @@ An even more minimal example is
 
 .. code-block:: tex
 
-    \documentclass[11pt]{article}
+    \documentclass{article}
     \usepackage{perf}
 
     \begin{document}
@@ -27,8 +27,7 @@ An even more minimal example is
         }
 
         \begin{tikzpicture}
-            \begin{axis}[title=Performance Functions,height=10cm,
-            legend pos=outer north east,grid=both,no marks, xlabel={Factor $\tau$}, ylabel={Estimated probability}]
+            \begin{axis}[title=Performance Functions,height=10cm, legend pos=outer north east,grid=both,no marks, xlabel={Factor $\tau$}, ylabel={Estimated probability}]
                 \addprofiles{2}{15} % Param #1: Number of methods to show. Param #2: Upper range for the x axis
                 \legend{method1, method2}
             \end{axis}
