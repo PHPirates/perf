@@ -16,17 +16,17 @@
 
     \perfset{
     robust fast \\
-    5    30 \\
+    5    60 \\
     5     1 \\
     5     1 \\
-    5    50 \\
+    5    1000 \\
     5     1 \\
+    6     1 \\
+    4     1 \\
+    7     1 \\
+    4     1 \\
     5     1 \\
-    5     1 \\
-    5     1 \\
-    5     1 \\
-    5     1 \\
-    5    45 \\
+    5    1000 \\
     }
 
     \printperftable
@@ -45,7 +45,7 @@
             \begin{axis}[title=Performance Functions,height=10cm,
             legend pos=outer north east,grid=both,no marks, xlabel={Factor $\tau$}, ylabel={$\P{r_{p,s} \le \tau}$}]
                 \addprofiles{2}{15}
-                \legend{robust,fast}
+                \legend{fast,robust}
             \end{axis}
         \end{tikzpicture}
         \label{fig:example-2-methods}
